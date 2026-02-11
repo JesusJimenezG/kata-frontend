@@ -15,11 +15,11 @@ This is the frontend for the Fullstack Resource Management and Reservation Platf
     ```
 2.  Install dependencies:
     ```bash
-    npm install
+    pnpm install
     ```
 3.  Start the Expo development server:
     ```bash
-    npx expo start
+    pnpm start
     ```
 
 ## Technologies
