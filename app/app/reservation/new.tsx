@@ -67,7 +67,7 @@ export default function NewReservationScreen() {
   };
 
   const startIso = buildIso(startDate, startTime);
-  const endIso = buildIso(endDate, endTime);
+  const endIso = buildIso(endDate || startDate, endTime);
   const isOverlapError = submitError
     ? submitError.toLowerCase().includes("overlap")
     : false;

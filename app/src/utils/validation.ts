@@ -29,6 +29,5 @@ export function validateDateRange(
   const startDate = new Date(start);
   const endDate = new Date(end);
   if (startDate >= endDate) return "Start time must be before end time";
-  if (startDate < new Date()) return "Start time must be in the future";
   return undefined;
 }
