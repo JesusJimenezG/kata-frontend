@@ -1,16 +1,17 @@
-import { Text, View } from "react-native";
-import { StatusBar } from "expo-status-bar";
+import { Redirect } from "expo-router";
+import { useAuthContext } from "../src/contexts";
+import { LoadingSpinner } from "../src/components";
 
-export default function Home() {
-  return (
-    <View className="flex-1 items-center justify-center bg-white">
-      <Text className="text-2xl font-bold text-blue-600">
-        Expo Router Initialized
-      </Text>
-      <Text className="text-gray-500 mt-2">
-        Ready for building the Resource Management app
-      </Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+export default function Index() {
+  const { isAuthenticated, isLoading } = useAuthContext();
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (isAuthenticated) {
+    return <Redirect href="/(tabs)" />;
+  }
+
+  return <Redirect href="/(auth)/login" />;
 }
