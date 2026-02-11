@@ -8,8 +8,12 @@ const BASE_URL = process.env.EXPO_PUBLIC_API_URL || "http://localhost:8080";
 /** Threshold before expiry at which a proactive refresh is triggered (ms). */
 const REFRESH_THRESHOLD_MS = 60_000; // 60 seconds
 
+/** Global request timeout (ms). Prevents hanging when the backend is unreachable. */
+const REQUEST_TIMEOUT_MS = 15_000;
+
 export const apiClient = axios.create({
   baseURL: BASE_URL,
+  timeout: REQUEST_TIMEOUT_MS,
   headers: {
     "Content-Type": "application/json",
   },
@@ -52,6 +56,7 @@ function doRefresh(): Promise<string> {
     const { data } = await axios.post<AuthResponse>(
       `${BASE_URL}/api/auth/refresh`,
       { refreshToken },
+      { timeout: REQUEST_TIMEOUT_MS },
     );
 
     await tokenStorage.save(data);

@@ -60,17 +60,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // ── Bootstrap: restore session from storage ──────────
   useEffect(() => {
     const bootstrap = async () => {
-      const stored = await tokenStorage.getStoredAuth();
-      if (stored) {
-        queryClient.setQueryData(authKeys.session(), stored);
-        setState({
-          isAuthenticated: true,
-          isLoading: false,
-          userEmail: stored.email,
-          isAdmin: isAdminToken(stored.accessToken),
-          role: getPrimaryRole(stored.accessToken),
-        });
-      } else {
+      try {
+        const stored = await tokenStorage.getStoredAuth();
+        if (stored) {
+          queryClient.setQueryData(authKeys.session(), stored);
+          setState({
+            isAuthenticated: true,
+            isLoading: false,
+            userEmail: stored.email,
+            isAdmin: isAdminToken(stored.accessToken),
+            role: getPrimaryRole(stored.accessToken),
+          });
+        } else {
+          setState(SIGNED_OUT_STATE);
+        }
+      } catch {
         setState(SIGNED_OUT_STATE);
       }
     };
