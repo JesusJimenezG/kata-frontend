@@ -14,9 +14,11 @@ import { Picker } from "@react-native-picker/picker";
 import {
   Badge,
   Button,
+  CalendarPicker,
   Input,
   LoadingSpinner,
   SectionHeader,
+  TimePicker,
 } from "../../src/components";
 import { useResources } from "../../src/services/api/resources";
 import {
@@ -107,7 +109,7 @@ export default function NewReservationScreen() {
         notes: notes.trim() || undefined,
       },
       {
-        onSuccess: () => router.back(),
+        onSuccess: () => router.replace("/(tabs)/reservations"),
         onError: (err) => Alert.alert("Error", getErrorMessage(err)),
       },
     );
@@ -160,48 +162,36 @@ export default function NewReservationScreen() {
           </View>
         )}
 
-        {/* Date & Time Inputs */}
+        {/* Date & Time Pickers */}
+        <CalendarPicker
+          label="Start Date *"
+          value={startDate}
+          onDateSelected={setStartDate}
+        />
+
         <View className="flex-row gap-3">
           <View className="flex-1">
-            <Input
-              label="Start Date *"
-              value={startDate}
-              onChangeText={setStartDate}
-              placeholder="YYYY-MM-DD"
-              keyboardType="numbers-and-punctuation"
+            <TimePicker
+              label="Start Time *"
+              value={startTime}
+              onTimeSelected={setStartTime}
             />
           </View>
           <View className="flex-1">
-            <Input
-              label="Start Time *"
-              value={startTime}
-              onChangeText={setStartTime}
-              placeholder="HH:MM"
-              keyboardType="numbers-and-punctuation"
+            <TimePicker
+              label="End Time *"
+              value={endTime}
+              onTimeSelected={setEndTime}
             />
           </View>
         </View>
 
-        <View className="flex-row gap-3">
-          <View className="flex-1">
-            <Input
-              label="End Date *"
-              value={endDate}
-              onChangeText={setEndDate}
-              placeholder="YYYY-MM-DD"
-              keyboardType="numbers-and-punctuation"
-            />
-          </View>
-          <View className="flex-1">
-            <Input
-              label="End Time *"
-              value={endTime}
-              onChangeText={setEndTime}
-              placeholder="HH:MM"
-              keyboardType="numbers-and-punctuation"
-            />
-          </View>
-        </View>
+        <CalendarPicker
+          label="End Date *"
+          value={endDate}
+          onDateSelected={setEndDate}
+          minDate={startDate || undefined}
+        />
 
         {errors.dateRange ? (
           <View className="bg-red-50 border border-red-200 rounded-xl px-4 py-2 mb-4">

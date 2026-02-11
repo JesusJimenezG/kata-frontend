@@ -77,10 +77,14 @@ export function useCreateReservation() {
 
   return useMutation<ReservationResponse, Error, CreateReservationRequest>({
     mutationFn: (data) => reservationsService.create(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: reservationKeys.active() });
-      queryClient.invalidateQueries({ queryKey: reservationKeys.myActive() });
-      queryClient.invalidateQueries({ queryKey: reservationKeys.myHistory() });
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: reservationKeys.active() }),
+        queryClient.invalidateQueries({ queryKey: reservationKeys.myActive() }),
+        queryClient.invalidateQueries({
+          queryKey: reservationKeys.myHistory(),
+        }),
+      ]);
     },
   });
 }
