@@ -24,6 +24,7 @@ import {
 import {
   formatDate,
   formatDateRange,
+  formatResourceType,
   startOfDay,
   endOfDay,
   addDays,
@@ -102,7 +103,10 @@ export default function ResourceDetailScreen() {
               </Text>
             ) : null}
           </View>
-          <Badge label={resource.resourceType.name} variant="info" />
+          <Badge
+            label={formatResourceType(resource.resourceType.name)}
+            variant="info"
+          />
         </View>
         {resource.description ? (
           <Text className="text-base text-gray-600 mt-3 web:text-lg">
