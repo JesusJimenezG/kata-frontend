@@ -20,3 +20,4 @@ export {
   getTokenExpiresIn,
   isTokenExpiringSoon,
 } from "./tokenUtils";
+export { formatResourceType, getResourceTypeEmoji } from "./resourceTypeUtils";
