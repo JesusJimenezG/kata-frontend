@@ -13,12 +13,18 @@ import { StatusBar } from "expo-status-bar";
 import { Button, Input } from "../../src/components";
 import { useAuthContext } from "../../src/contexts";
 import { useLogin } from "../../src/services/api/auth";
-import { validateEmail, validatePassword, getErrorMessage } from "../../src/utils";
+import {
+  validateEmail,
+  validatePassword,
+  getErrorMessage,
+} from "../../src/utils";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
+    {},
+  );
 
   const { signIn } = useAuthContext();
   const loginMutation = useLogin();
@@ -51,12 +57,14 @@ export default function LoginScreen() {
     >
       <StatusBar style="dark" />
       <ScrollView
-        contentContainerClassName="flex-grow justify-center px-6 py-12"
+        contentContainerClassName="flex-grow justify-center px-6 py-12 web:max-w-md web:mx-auto web:w-full web:px-8 web:py-16"
         keyboardShouldPersistTaps="handled"
       >
         <View className="mb-10">
-          <Text className="text-3xl font-bold text-gray-900">Welcome back</Text>
-          <Text className="text-base text-gray-500 mt-2">
+          <Text className="text-3xl font-bold text-gray-900 web:text-4xl">
+            Welcome back
+          </Text>
+          <Text className="text-base text-gray-500 mt-2 web:text-lg">
             Sign in to manage your reservations
           </Text>
         </View>

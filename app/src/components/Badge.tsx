@@ -18,8 +18,12 @@ const variantStyles: Record<BadgeVariant, { bg: string; text: string }> = {
 export function Badge({ label, variant = "neutral" }: BadgeProps) {
   const styles = variantStyles[variant];
   return (
-    <View className={`${styles.bg} rounded-full px-2.5 py-0.5`}>
-      <Text className={`${styles.text} text-xs font-medium`}>{label}</Text>
+    <View
+      className={`${styles.bg} rounded-full px-2.5 py-0.5 web:px-3 web:py-1`}
+    >
+      <Text className={`${styles.text} text-xs font-medium web:text-sm`}>
+        {label}
+      </Text>
     </View>
   );
 }

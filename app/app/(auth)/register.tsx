@@ -78,14 +78,14 @@ export default function RegisterScreen() {
     >
       <StatusBar style="dark" />
       <ScrollView
-        contentContainerClassName="flex-grow justify-center px-6 py-12"
+        contentContainerClassName="flex-grow justify-center px-6 py-12 web:max-w-md web:mx-auto web:w-full web:px-8 web:py-16"
         keyboardShouldPersistTaps="handled"
       >
         <View className="mb-10">
-          <Text className="text-3xl font-bold text-gray-900">
+          <Text className="text-3xl font-bold text-gray-900 web:text-4xl">
             Create account
           </Text>
-          <Text className="text-base text-gray-500 mt-2">
+          <Text className="text-base text-gray-500 mt-2 web:text-lg">
             Join the resource management platform
           </Text>
         </View>

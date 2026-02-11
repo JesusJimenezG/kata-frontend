@@ -13,9 +13,22 @@ import {
   SectionHeader,
 } from "../../src/components";
 import { useAuthContext } from "../../src/contexts";
-import { useResource, useDeleteResource } from "../../src/services/api/resources";
-import { useResourceReservationHistory, useResourceAvailability } from "../../src/services/api/reservations";
-import { formatDate, formatDateRange, startOfDay, endOfDay, addDays, getErrorMessage } from "../../src/utils";
+import {
+  useResource,
+  useDeleteResource,
+} from "../../src/services/api/resources";
+import {
+  useResourceReservationHistory,
+  useResourceAvailability,
+} from "../../src/services/api/reservations";
+import {
+  formatDate,
+  formatDateRange,
+  startOfDay,
+  endOfDay,
+  addDays,
+  getErrorMessage,
+} from "../../src/utils";
 import type { AvailabilitySlot } from "../../src/services/api/types";
 
 export default function ResourceDetailScreen() {
@@ -23,7 +36,13 @@ export default function ResourceDetailScreen() {
   const { isAdmin } = useAuthContext();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-  const { data: resource, isLoading, isError, error, refetch } = useResource(id);
+  const {
+    data: resource,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useResource(id);
   const deleteMutation = useDeleteResource();
 
   // Availability for today + next 7 days
@@ -66,12 +85,15 @@ export default function ResourceDetailScreen() {
   if (!resource) return null;
 
   return (
-    <ScrollView className="flex-1 bg-gray-50">
+    <ScrollView
+      className="flex-1 bg-gray-50"
+      contentContainerClassName="web:max-w-3xl web:mx-auto web:w-full"
+    >
       {/* Header Card */}
       <View className="bg-white p-6 border-b border-gray-100">
         <View className="flex-row items-start justify-between mb-2">
           <View className="flex-1">
-            <Text className="text-2xl font-bold text-gray-900">
+            <Text className="text-2xl font-bold text-gray-900 web:text-3xl">
               {resource.name}
             </Text>
             {resource.location ? (
@@ -83,7 +105,7 @@ export default function ResourceDetailScreen() {
           <Badge label={resource.resourceType.name} variant="info" />
         </View>
         {resource.description ? (
-          <Text className="text-base text-gray-600 mt-3">
+          <Text className="text-base text-gray-600 mt-3 web:text-lg">
             {resource.description}
           </Text>
         ) : null}
@@ -103,7 +125,12 @@ export default function ResourceDetailScreen() {
       <View className="px-4 pt-4 gap-3">
         <Button
           title="Reserve this Resource"
-          onPress={() => router.push({ pathname: "/reservation/new", params: { resourceId: id, resourceName: resource.name } })}
+          onPress={() =>
+            router.push({
+              pathname: "/reservation/new",
+              params: { resourceId: id, resourceName: resource.name },
+            })
+          }
         />
 
         {isAdmin ? (
@@ -136,7 +163,9 @@ export default function ResourceDetailScreen() {
                 key={`${slot.start}-${index}`}
                 className={`flex-row items-center justify-between rounded-xl px-4 py-3 ${slot.available ? "bg-green-50 border border-green-200" : "bg-red-50 border border-red-200"}`}
               >
-                <Text className={`text-sm font-medium ${slot.available ? "text-green-700" : "text-red-700"}`}>
+                <Text
+                  className={`text-sm font-medium ${slot.available ? "text-green-700" : "text-red-700"}`}
+                >
                   {formatDateRange(slot.start, slot.end)}
                 </Text>
                 <Badge

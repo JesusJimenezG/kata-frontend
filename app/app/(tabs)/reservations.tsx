@@ -104,7 +104,7 @@ export default function ReservationsScreen() {
         <FlatList
           data={data}
           keyExtractor={(item) => item.id}
-          contentContainerClassName="p-4 gap-3"
+          contentContainerClassName="p-4 gap-3 web:max-w-3xl web:mx-auto web:w-full web:py-6"
           showsVerticalScrollIndicator={false}
           renderItem={renderItem}
           ListEmptyComponent={

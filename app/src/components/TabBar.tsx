@@ -17,7 +17,7 @@ export function TabBar({ tabs, activeTab, onTabChange }: TabBarProps) {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerClassName="px-4 gap-1"
+        contentContainerClassName="px-4 gap-1 web:gap-2"
       >
         {tabs.map((tab) => {
           const isActive = tab.key === activeTab;

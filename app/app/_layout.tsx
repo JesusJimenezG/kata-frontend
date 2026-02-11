@@ -26,15 +26,27 @@ export default function RootLayout() {
           />
           <Stack.Screen
             name="reservation/new"
-            options={{ headerShown: true, title: "New Reservation", presentation: "modal" }}
+            options={{
+              headerShown: true,
+              title: "New Reservation",
+              presentation: "modal",
+            }}
           />
           <Stack.Screen
             name="resource/new"
-            options={{ headerShown: true, title: "New Resource", presentation: "modal" }}
+            options={{
+              headerShown: true,
+              title: "New Resource",
+              presentation: "modal",
+            }}
           />
           <Stack.Screen
             name="resource/edit/[id]"
-            options={{ headerShown: true, title: "Edit Resource", presentation: "modal" }}
+            options={{
+              headerShown: true,
+              title: "Edit Resource",
+              presentation: "modal",
+            }}
           />
         </Stack>
       </AuthProvider>

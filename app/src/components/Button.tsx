@@ -1,4 +1,9 @@
-import { ActivityIndicator, Pressable, Text, type PressableProps } from "react-native";
+import {
+  ActivityIndicator,
+  Pressable,
+  Text,
+  type PressableProps,
+} from "react-native";
 
 type Variant = "primary" | "secondary" | "danger" | "outline" | "ghost";
 
@@ -45,14 +50,16 @@ export function Button({
 
   return (
     <Pressable
-      className={`rounded-xl px-6 py-3.5 items-center justify-center ${styles.container} ${fullWidth ? "w-full" : ""} ${isDisabled ? "opacity-50" : ""}`}
+      className={`rounded-xl px-6 py-3.5 items-center justify-center web:py-4 web:cursor-pointer ${styles.container} ${fullWidth ? "w-full" : ""} ${isDisabled ? "opacity-50" : ""}`}
       disabled={isDisabled}
       {...props}
     >
       {loading ? (
         <ActivityIndicator
           size="small"
-          color={variant === "outline" || variant === "ghost" ? "#2563EB" : "#FFFFFF"}
+          color={
+            variant === "outline" || variant === "ghost" ? "#2563EB" : "#FFFFFF"
+          }
         />
       ) : (
         <Text className={`text-base ${styles.text}`}>{title}</Text>

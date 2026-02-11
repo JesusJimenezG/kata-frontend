@@ -14,19 +14,27 @@ import { useResources } from "../../src/services/api/resources";
 
 export default function ResourcesScreen() {
   const { isAdmin } = useAuthContext();
-  const { data: resources, isLoading, isError, error, refetch } = useResources({ active: true });
+  const {
+    data: resources,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useResources({ active: true });
 
   if (isLoading) return <LoadingSpinner />;
 
   return (
     <View className="flex-1 bg-gray-50">
       {isAdmin ? (
-        <View className="px-4 pt-4">
+        <View className="px-4 pt-4 web:max-w-3xl web:mx-auto web:w-full">
           <Pressable
             className="bg-blue-600 rounded-xl py-3 items-center active:bg-blue-700"
             onPress={() => router.push("/resource/new")}
           >
-            <Text className="text-white font-semibold text-base">+ New Resource</Text>
+            <Text className="text-white font-semibold text-base">
+              + New Resource
+            </Text>
           </Pressable>
         </View>
       ) : null}
@@ -41,19 +49,14 @@ export default function ResourcesScreen() {
       <FlatList
         data={resources}
         keyExtractor={(item) => item.id}
-        contentContainerClassName="p-4 gap-3"
+        contentContainerClassName="p-4 gap-3 web:max-w-3xl web:mx-auto web:w-full web:py-6"
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
           <Card onPress={() => router.push(`/resource/${item.id}`)}>
             <CardHeader
               title={item.name}
               subtitle={item.location || undefined}
-              right={
-                <Badge
-                  label={item.resourceType.name}
-                  variant="info"
-                />
-              }
+              right={<Badge label={item.resourceType.name} variant="info" />}
             />
             {item.description ? (
               <Text className="text-sm text-gray-600 mt-1" numberOfLines={2}>

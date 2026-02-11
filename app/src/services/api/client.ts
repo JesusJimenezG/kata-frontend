@@ -2,7 +2,7 @@ import axios from "axios";
 import { tokenStorage } from "./tokenStorage";
 import type { AuthResponse } from "./types";
 
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = process.env.EXPO_PUBLIC_API_URL || "http://localhost:8080";
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
@@ -14,7 +14,11 @@ export const apiClient = axios.create({
 // ── Request interceptor: attach access token ──────────
 apiClient.interceptors.request.use(async (config) => {
   // Skip auth header for public endpoints
-  const publicPaths = ["/api/auth/login", "/api/auth/register", "/api/auth/refresh"];
+  const publicPaths = [
+    "/api/auth/login",
+    "/api/auth/register",
+    "/api/auth/refresh",
+  ];
   const isPublic = publicPaths.some((path) => config.url?.includes(path));
 
   if (!isPublic) {

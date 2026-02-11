@@ -9,7 +9,7 @@ export function Card({ children, ...props }: CardProps) {
 
   return (
     <Pressable
-      className={`bg-white rounded-2xl border border-gray-100 p-4 shadow-sm ${isClickable ? "active:bg-gray-50" : ""}`}
+      className={`bg-white rounded-2xl border border-gray-100 p-4 shadow-sm web:shadow-md web:p-5 ${isClickable ? "active:bg-gray-50 web:cursor-pointer" : ""}`}
       disabled={!isClickable}
       {...props}
     >
@@ -28,7 +28,9 @@ export function CardHeader({ title, subtitle, right }: CardHeaderProps) {
   return (
     <View className="flex-row items-start justify-between mb-2">
       <View className="flex-1 mr-2">
-        <Text className="text-base font-semibold text-gray-900">{title}</Text>
+        <Text className="text-base font-semibold text-gray-900 web:text-lg">
+          {title}
+        </Text>
         {subtitle ? (
           <Text className="text-sm text-gray-500 mt-0.5">{subtitle}</Text>
         ) : null}

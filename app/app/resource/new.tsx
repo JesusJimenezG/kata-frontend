@@ -33,7 +33,8 @@ export default function NewResourceScreen() {
   const validate = (): boolean => {
     const newErrors: FormErrors = {
       name: validateRequired(name, "Name"),
-      resourceTypeId: resourceTypeId === 0 ? "Resource type is required" : undefined,
+      resourceTypeId:
+        resourceTypeId === 0 ? "Resource type is required" : undefined,
     };
     setErrors(newErrors);
     return !Object.values(newErrors).some(Boolean);
@@ -62,7 +63,7 @@ export default function NewResourceScreen() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView
-        contentContainerClassName="p-6"
+        contentContainerClassName="p-6 web:max-w-lg web:mx-auto web:w-full web:py-8"
         keyboardShouldPersistTaps="handled"
       >
         <Input
@@ -83,7 +84,7 @@ export default function NewResourceScreen() {
         />
 
         <View className="mb-4">
-          <Text className="text-sm font-medium text-gray-700 mb-1">
+          <Text className="text-sm font-medium text-gray-700 mb-1 web:text-base">
             Resource Type *
           </Text>
           <View className="border border-gray-300 rounded-xl overflow-hidden bg-white">

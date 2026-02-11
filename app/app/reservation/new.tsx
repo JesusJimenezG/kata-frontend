@@ -121,13 +121,13 @@ export default function NewReservationScreen() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView
-        contentContainerClassName="p-6"
+        contentContainerClassName="p-6 web:max-w-lg web:mx-auto web:w-full web:py-8"
         keyboardShouldPersistTaps="handled"
       >
         {/* Resource Picker */}
         {params.resourceId ? (
           <View className="mb-4">
-            <Text className="text-sm font-medium text-gray-700 mb-1">
+            <Text className="text-sm font-medium text-gray-700 mb-1 web:text-base">
               Resource
             </Text>
             <View className="border border-gray-300 rounded-xl px-4 py-3 bg-gray-50">
@@ -138,7 +138,7 @@ export default function NewReservationScreen() {
           </View>
         ) : (
           <View className="mb-4">
-            <Text className="text-sm font-medium text-gray-700 mb-1">
+            <Text className="text-sm font-medium text-gray-700 mb-1 web:text-base">
               Resource *
             </Text>
             <View className="border border-gray-300 rounded-xl overflow-hidden bg-white">
