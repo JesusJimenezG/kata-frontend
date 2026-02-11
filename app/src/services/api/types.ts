@@ -7,11 +7,19 @@ export interface ApiError {
 }
 
 // ── Auth ───────────────────────────────────────────────
+export type UserRole =
+  | "USER"
+  | "EMPLOYEE"
+  | "MANAGER"
+  | "HEAD_OF_OPERATIONS"
+  | "ADMIN";
+
 export interface RegisterRequest {
   email: string;
   password: string;
   firstName: string;
   lastName: string;
+  role: UserRole;
 }
 
 export interface LoginRequest {

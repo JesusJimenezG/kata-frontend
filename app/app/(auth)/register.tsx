@@ -10,9 +10,11 @@ import {
 import { Link, router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
-import { Button, Input } from "../../src/components";
+import { Button, Dropdown, Input } from "../../src/components";
+import type { DropdownOption } from "../../src/components/Dropdown";
 import { useAuthContext } from "../../src/contexts";
 import { useRegister } from "../../src/services/api/auth";
+import type { UserRole } from "../../src/services/api/types";
 import {
   validateEmail,
   validatePassword,
@@ -20,12 +22,21 @@ import {
   getErrorMessage,
 } from "../../src/utils";
 
+const ROLE_OPTIONS: DropdownOption[] = [
+  { label: "User", value: "USER" },
+  { label: "Employee", value: "EMPLOYEE" },
+  { label: "Manager", value: "MANAGER" },
+  { label: "Head of Operations", value: "HEAD_OF_OPERATIONS" },
+  { label: "Admin", value: "ADMIN" },
+];
+
 interface FormErrors {
   firstName?: string;
   lastName?: string;
   email?: string;
   password?: string;
   confirmPassword?: string;
+  role?: string;
 }
 
 export default function RegisterScreen() {
@@ -34,6 +45,7 @@ export default function RegisterScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [role, setRole] = useState<UserRole | "">("");
   const [errors, setErrors] = useState<FormErrors>({});
 
   const { signIn } = useAuthContext();
@@ -47,6 +59,7 @@ export default function RegisterScreen() {
       password: validatePassword(password),
       confirmPassword:
         password !== confirmPassword ? "Passwords don't match" : undefined,
+      role: !role ? "Role is required" : undefined,
     };
     setErrors(newErrors);
     return !Object.values(newErrors).some(Boolean);
@@ -61,6 +74,7 @@ export default function RegisterScreen() {
         password,
         firstName: firstName.trim(),
         lastName: lastName.trim(),
+        role: role as UserRole,
       },
       {
         onSuccess: (data) => {
@@ -146,6 +160,15 @@ export default function RegisterScreen() {
           placeholder="Re-enter password"
           secureTextEntry
           textContentType="newPassword"
+        />
+
+        <Dropdown
+          label="Role"
+          options={ROLE_OPTIONS}
+          value={role}
+          onValueChange={(v) => setRole(v as UserRole)}
+          placeholder="Select a role"
+          error={errors.role}
         />
 
         {registerMutation.isError ? (

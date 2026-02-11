@@ -4,7 +4,7 @@ import { router } from "expo-router";
 import { tokenStorage, type StoredAuth } from "../services/api/tokenStorage";
 import { setAuthFailureHandler } from "../services/api/client";
 import { useSessionRefresh, authKeys } from "../services/api/auth/useAuth";
-import { isAdminToken } from "../utils/tokenUtils";
+import { getPrimaryRole, isAdminToken } from "../utils/tokenUtils";
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -12,6 +12,7 @@ interface AuthState {
   userEmail: string | null;
   /** Simplified admin check — adjust when backend provides role info */
   isAdmin: boolean;
+  role: string | null;
 }
 
 const SIGNED_OUT_STATE: AuthState = {
@@ -19,6 +20,7 @@ const SIGNED_OUT_STATE: AuthState = {
   isLoading: false,
   userEmail: null,
   isAdmin: false,
+  role: null,
 };
 
 interface AuthContextValue extends AuthState {
@@ -66,6 +68,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           isLoading: false,
           userEmail: stored.email,
           isAdmin: isAdminToken(stored.accessToken),
+          role: getPrimaryRole(stored.accessToken),
         });
       } else {
         setState(SIGNED_OUT_STATE);
@@ -82,6 +85,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       isAuthenticated: true,
       userEmail: auth.email,
       isAdmin: isAdminToken(auth.accessToken),
+      role: getPrimaryRole(auth.accessToken),
     }));
   };
 

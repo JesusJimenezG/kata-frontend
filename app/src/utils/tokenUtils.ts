@@ -66,3 +66,9 @@ export function isAdminToken(token: string): boolean {
   const roles = getTokenRoles(token);
   return roles.includes("ADMIN") || roles.includes("ROLE_ADMIN");
 }
+
+export function getPrimaryRole(token: string): string | null {
+  const roles = getTokenRoles(token);
+  if (roles.includes("ADMIN") || roles.includes("ROLE_ADMIN")) return "ADMIN";
+  return roles[0] ?? null;
+}

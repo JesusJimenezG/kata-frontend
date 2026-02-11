@@ -10,8 +10,15 @@ import {
 } from "../../src/services/api/reservations";
 import { getErrorMessage } from "../../src/utils";
 
+function formatRoleLabel(role: string): string {
+  return role
+    .split("_")
+    .map((word) => word.charAt(0) + word.slice(1).toLowerCase())
+    .join(" ");
+}
+
 export default function ProfileScreen() {
-  const { userEmail, isAdmin, signOut, setAdmin } = useAuthContext();
+  const { userEmail, role, signOut } = useAuthContext();
   const logoutMutation = useLogout();
 
   const { data: myActive } = useMyActiveReservations();
@@ -44,7 +51,7 @@ export default function ProfileScreen() {
               {userEmail}
             </Text>
             <Text className="text-sm text-gray-500 mt-1 web:text-base">
-              {isAdmin ? "Administrator" : "User"}
+              {role ? formatRoleLabel(role) : "User"}
             </Text>
           </View>
         </Card>
@@ -70,30 +77,6 @@ export default function ProfileScreen() {
                   Total Reservations
                 </Text>
               </View>
-            </View>
-          </Card>
-        </View>
-
-        {/* Admin Toggle (for demo/testing) */}
-        <View className="mt-4">
-          <Card>
-            <View className="flex-row items-center justify-between">
-              <View>
-                <Text className="text-sm font-medium text-gray-800">
-                  Admin Mode
-                </Text>
-                <Text className="text-xs text-gray-500">
-                  Toggle admin privileges for testing
-                </Text>
-              </View>
-              <Pressable
-                className={`w-12 h-7 rounded-full justify-center px-0.5 ${isAdmin ? "bg-blue-600" : "bg-gray-300"}`}
-                onPress={() => setAdmin(!isAdmin)}
-              >
-                <View
-                  className={`w-6 h-6 rounded-full bg-white shadow ${isAdmin ? "self-end" : "self-start"}`}
-                />
-              </Pressable>
             </View>
           </Card>
         </View>
