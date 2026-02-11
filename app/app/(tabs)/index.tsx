@@ -1,5 +1,12 @@
-import { useState } from "react";
-import { FlatList, Pressable, SectionList, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import {
+  FlatList,
+  Pressable,
+  SectionList,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { router } from "expo-router";
 
 import {
@@ -60,23 +67,40 @@ function getTypeTabs(resources: ResourceResponse[]) {
 export default function ResourcesScreen() {
   const { isAdmin } = useAuthContext();
   const [activeType, setActiveType] = useState(ALL_TAB_KEY);
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearch(search.trim()), 300);
+    return () => clearTimeout(timer);
+  }, [search]);
+
   const {
     data: resources,
     isLoading,
+    isFetching,
+    isPlaceholderData,
     isError,
     error,
     refetch,
-  } = useResources({ active: true });
+  } = useResources({
+    active: true,
+    search: debouncedSearch || undefined,
+  });
 
-  if (isLoading) return <LoadingSpinner />;
+  // Only block the full screen on the very first mount (no data at all)
+  if (isLoading && !resources) return <LoadingSpinner />;
 
   const allResources = resources ?? [];
   const tabs = getTypeTabs(allResources);
+
   const sections = groupByResourceType(allResources);
   const isFiltered = activeType !== ALL_TAB_KEY;
   const filteredResources = isFiltered
     ? allResources.filter((r) => r.resourceType.name === activeType)
     : allResources;
+
+  const listLoading = isFetching || isPlaceholderData;
 
   return (
     <View className="flex-1 bg-gray-50">
@@ -93,6 +117,18 @@ export default function ResourcesScreen() {
         </View>
       ) : null}
 
+      <View className="px-4 pt-3 web:max-w-3xl web:mx-auto web:w-full">
+        <TextInput
+          className="border border-gray-300 rounded-xl px-4 py-3 text-base text-gray-900 bg-white"
+          placeholder="Search resources..."
+          placeholderTextColor="#9CA3AF"
+          value={search}
+          onChangeText={setSearch}
+          autoCorrect={false}
+          autoCapitalize="none"
+        />
+      </View>
+
       {allResources.length > 0 ? (
         <TabBar
           tabs={tabs}
@@ -105,7 +141,9 @@ export default function ResourcesScreen() {
         <ErrorMessage message={getErrorMessage(error)} onRetry={refetch} />
       ) : null}
 
-      {isFiltered ? (
+      {listLoading ? (
+        <LoadingSpinner />
+      ) : isFiltered ? (
         <FlatList
           data={filteredResources}
           keyExtractor={(item) => item.id}

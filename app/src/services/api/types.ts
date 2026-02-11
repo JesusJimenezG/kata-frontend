@@ -71,6 +71,7 @@ export interface ResourceResponse {
 export interface ResourceFilters {
   active?: boolean;
   typeId?: number;
+  search?: string;
 }
 
 // ── Reservations ───────────────────────────────────────

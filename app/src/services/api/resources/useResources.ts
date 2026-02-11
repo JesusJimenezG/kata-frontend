@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { resourcesService } from "./resourcesService";
 import type {
   ResourceFilters,
@@ -19,6 +24,7 @@ export function useResources(filters?: ResourceFilters) {
   return useQuery<ResourceResponse[]>({
     queryKey: resourceKeys.list(filters),
     queryFn: () => resourcesService.getAll(filters),
+    placeholderData: keepPreviousData,
   });
 }
 

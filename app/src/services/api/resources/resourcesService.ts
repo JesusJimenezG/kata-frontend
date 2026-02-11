@@ -10,6 +10,7 @@ export const resourcesService = {
     const params: Record<string, string> = {};
     if (filters?.active !== undefined) params.active = String(filters.active);
     if (filters?.typeId !== undefined) params.typeId = String(filters.typeId);
+    if (filters?.search) params.search = filters.search;
 
     const response = await apiClient.get<ResourceResponse[]>("/api/resources", {
       params,
@@ -18,12 +19,17 @@ export const resourcesService = {
   },
 
   async getById(id: string): Promise<ResourceResponse> {
-    const response = await apiClient.get<ResourceResponse>(`/api/resources/${id}`);
+    const response = await apiClient.get<ResourceResponse>(
+      `/api/resources/${id}`,
+    );
     return response.data;
   },
 
   async create(data: ResourceRequest): Promise<ResourceResponse> {
-    const response = await apiClient.post<ResourceResponse>("/api/resources", data);
+    const response = await apiClient.post<ResourceResponse>(
+      "/api/resources",
+      data,
+    );
     return response.data;
   },
 
