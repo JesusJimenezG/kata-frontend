@@ -105,9 +105,9 @@ export default function ResourcesScreen() {
   return (
     <View className="flex-1 bg-gray-50">
       {isAdmin ? (
-        <View className="px-4 pt-4 web:max-w-3xl web:mx-auto web:w-full">
+        <View className="px-4 pt-4 web:max-w-5xl web:mx-auto web:w-full web:pt-6 md:px-6 lg:px-8">
           <Pressable
-            className="bg-blue-600 rounded-xl py-3 items-center active:bg-blue-700"
+            className="bg-blue-600 rounded-xl py-3 items-center active:bg-blue-700 web:cursor-pointer web:hover:bg-blue-700 web:transition-colors web:duration-200 web:hover:shadow-md md:py-3.5 lg:rounded-2xl"
             onPress={() => router.push("/resource/new")}
           >
             <Text className="text-white font-semibold text-base">
@@ -117,9 +117,9 @@ export default function ResourcesScreen() {
         </View>
       ) : null}
 
-      <View className="px-4 pt-3 web:max-w-3xl web:mx-auto web:w-full">
+      <View className="px-4 pt-3 web:max-w-5xl web:mx-auto web:w-full web:pt-4 md:px-6 lg:px-8">
         <TextInput
-          className="border border-gray-300 rounded-xl px-4 py-3 text-base text-gray-900 bg-white"
+          className="border border-gray-300 rounded-xl px-4 py-3 text-base text-gray-900 bg-white web:py-3.5 web:text-lg web:transition-colors web:duration-200 web:outline-none web:hover:border-gray-400 md:rounded-2xl lg:py-4"
           placeholder="Search resources..."
           placeholderTextColor="#9CA3AF"
           value={search}
@@ -147,7 +147,7 @@ export default function ResourcesScreen() {
         <FlatList
           data={filteredResources}
           keyExtractor={(item) => item.id}
-          contentContainerClassName="p-4 gap-3 web:max-w-3xl web:mx-auto web:w-full web:py-6"
+          contentContainerClassName="p-4 gap-3 web:max-w-5xl web:mx-auto web:w-full web:py-6 web:gap-4 md:px-6 lg:px-8 lg:py-8"
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <Card onPress={() => router.push(`/resource/${item.id}`)}>
@@ -156,7 +156,10 @@ export default function ResourcesScreen() {
                 subtitle={item.location || undefined}
               />
               {item.description ? (
-                <Text className="text-sm text-gray-600 mt-1" numberOfLines={2}>
+                <Text
+                  className="text-sm text-gray-600 mt-1 web:text-base"
+                  numberOfLines={2}
+                >
                   {item.description}
                 </Text>
               ) : null}
@@ -173,7 +176,7 @@ export default function ResourcesScreen() {
         <SectionList
           sections={sections}
           keyExtractor={(item) => item.id}
-          contentContainerClassName="p-4 web:max-w-3xl web:mx-auto web:w-full web:py-6"
+          contentContainerClassName="p-4 web:max-w-5xl web:mx-auto web:w-full web:py-6 web:gap-1 md:px-6 lg:px-8 lg:py-8"
           showsVerticalScrollIndicator={false}
           renderSectionHeader={({ section }) => (
             <SectionHeader
@@ -182,7 +185,7 @@ export default function ResourcesScreen() {
             />
           )}
           renderItem={({ item }) => (
-            <View className="mb-3">
+            <View className="mb-3 web:mb-4">
               <Card onPress={() => router.push(`/resource/${item.id}`)}>
                 <CardHeader
                   title={item.name}
@@ -190,7 +193,7 @@ export default function ResourcesScreen() {
                 />
                 {item.description ? (
                   <Text
-                    className="text-sm text-gray-600 mt-1"
+                    className="text-sm text-gray-600 mt-1 web:text-base"
                     numberOfLines={2}
                   >
                     {item.description}

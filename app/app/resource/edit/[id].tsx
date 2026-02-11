@@ -114,7 +114,7 @@ export default function EditResourceScreen() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView
-        contentContainerClassName="p-6 web:max-w-lg web:mx-auto web:w-full web:py-8"
+        contentContainerClassName="p-6 web:max-w-2xl web:mx-auto web:w-full web:py-8 md:px-8 lg:px-12 lg:py-10"
         keyboardShouldPersistTaps="handled"
       >
         <Input
@@ -145,7 +145,7 @@ export default function EditResourceScreen() {
           <Text className="text-sm font-medium text-gray-700 mb-1 web:text-base">
             Resource Type *
           </Text>
-          <View className="border border-gray-300 rounded-xl overflow-hidden bg-white">
+          <View className="border border-gray-300 rounded-xl overflow-hidden bg-white web:cursor-pointer">
             <Picker
               selectedValue={resourceTypeId}
               onValueChange={(value) => setResourceTypeId(value)}
@@ -171,8 +171,10 @@ export default function EditResourceScreen() {
         />
 
         {submitError ? (
-          <View className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 mt-4">
-            <Text className="text-red-700 text-sm">{submitError}</Text>
+          <View className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 mt-4 web:px-6 web:py-4">
+            <Text className="text-red-700 text-sm web:text-base">
+              {submitError}
+            </Text>
           </View>
         ) : null}
 

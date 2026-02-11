@@ -85,10 +85,14 @@ export default function ReservationsScreen() {
         }
       />
       {item.notes ? (
-        <Text className="text-sm text-gray-500 mt-1">{item.notes}</Text>
+        <Text className="text-sm text-gray-500 mt-1 web:text-base">
+          {item.notes}
+        </Text>
       ) : null}
       <View className="flex-row items-center justify-between mt-3">
-        <Text className="text-xs text-gray-400">{item.userEmail}</Text>
+        <Text className="text-xs text-gray-400 web:text-sm">
+          {item.userEmail}
+        </Text>
         {canCancel(item) ? (
           <Button
             title="Cancel"
@@ -118,7 +122,7 @@ export default function ReservationsScreen() {
         <FlatList
           data={data}
           keyExtractor={(item) => item.id}
-          contentContainerClassName="p-4 gap-3 web:max-w-3xl web:mx-auto web:w-full web:py-6"
+          contentContainerClassName="p-4 gap-3 web:max-w-5xl web:mx-auto web:w-full web:py-6 web:gap-4 md:px-6 lg:px-8 lg:py-8"
           showsVerticalScrollIndicator={false}
           renderItem={renderItem}
           ListEmptyComponent={

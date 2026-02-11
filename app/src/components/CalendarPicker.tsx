@@ -74,7 +74,7 @@ export function CalendarPicker({
       </Text>
       <Pressable
         onPress={() => setVisible(true)}
-        className={`border rounded-xl px-4 py-3 bg-white flex-row items-center justify-between web:py-3.5 ${borderColor}`}
+        className={`border rounded-xl px-4 py-3 bg-white flex-row items-center justify-between web:py-3.5 web:cursor-pointer web:transition-colors web:duration-200 web:hover:border-gray-400 ${borderColor}`}
       >
         <Text
           className={`text-base ${value ? "text-gray-900" : "text-gray-400"} web:text-lg`}
@@ -94,11 +94,11 @@ export function CalendarPicker({
         onRequestClose={() => setVisible(false)}
       >
         <Pressable
-          className="flex-1 bg-black/40 justify-center items-center px-6"
+          className="flex-1 bg-black/40 justify-center items-center px-6 web:backdrop-blur-sm"
           onPress={() => setVisible(false)}
         >
           <Pressable
-            className="bg-white rounded-2xl w-full max-w-md overflow-hidden"
+            className="bg-white rounded-2xl w-full max-w-md overflow-hidden web:shadow-2xl"
             onPress={() => {}}
           >
             <View className="px-4 pt-4 pb-2 flex-row items-center justify-between">

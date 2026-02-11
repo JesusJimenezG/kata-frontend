@@ -14,17 +14,17 @@ export function EmptyState({
   onAction,
 }: EmptyStateProps) {
   return (
-    <View className="flex-1 items-center justify-center px-8 py-12">
+    <View className="flex-1 items-center justify-center px-8 py-12 web:py-20">
       <Text className="text-6xl mb-4 web:text-7xl">📭</Text>
       <Text className="text-lg font-semibold text-gray-800 text-center mb-2 web:text-xl">
         {title}
       </Text>
-      <Text className="text-sm text-gray-500 text-center mb-6 web:text-base">
+      <Text className="text-sm text-gray-500 text-center mb-6 web:text-base web:max-w-md">
         {message}
       </Text>
       {actionLabel && onAction ? (
         <Pressable
-          className="bg-blue-600 rounded-xl px-6 py-3 active:bg-blue-700"
+          className="bg-blue-600 rounded-xl px-6 py-3 active:bg-blue-700 web:cursor-pointer web:hover:bg-blue-700 web:transition-colors web:duration-200"
           onPress={onAction}
         >
           <Text className="text-white font-semibold">{actionLabel}</Text>

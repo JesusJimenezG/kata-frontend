@@ -49,13 +49,13 @@ export default function ProfileScreen() {
   };
 
   return (
-    <View className="flex-1 bg-gray-50 p-4 web:items-center">
-      <View className="web:max-w-lg web:w-full">
+    <View className="flex-1 bg-gray-50 p-4 web:items-center web:py-8 md:p-6 lg:p-8">
+      <View className="web:max-w-xl web:w-full">
         {/* User Info Card */}
         <Card>
-          <View className="items-center py-4">
-            <View className="w-16 h-16 rounded-full bg-blue-100 items-center justify-center mb-3">
-              <Text className="text-2xl">👤</Text>
+          <View className="items-center py-4 web:py-6">
+            <View className="w-16 h-16 rounded-full bg-blue-100 items-center justify-center mb-3 web:w-20 web:h-20 web:mb-4">
+              <Text className="text-2xl web:text-3xl">👤</Text>
             </View>
             <Text className="text-lg font-bold text-gray-900 web:text-xl">
               {userEmail}
@@ -70,7 +70,7 @@ export default function ProfileScreen() {
         <View className="mt-4">
           <Card>
             <View className="flex-row">
-              <View className="flex-1 items-center py-2">
+              <View className="flex-1 items-center py-2 web:py-4">
                 <Text className="text-2xl font-bold text-blue-600 web:text-3xl">
                   {myActive?.length ?? 0}
                 </Text>
@@ -79,7 +79,7 @@ export default function ProfileScreen() {
                 </Text>
               </View>
               <View className="w-px bg-gray-200" />
-              <View className="flex-1 items-center py-2">
+              <View className="flex-1 items-center py-2 web:py-4">
                 <Text className="text-2xl font-bold text-gray-700 web:text-3xl">
                   {myHistory?.length ?? 0}
                 </Text>
@@ -101,7 +101,7 @@ export default function ProfileScreen() {
         </View>
 
         {/* Logout */}
-        <View className="mt-6">
+        <View className="mt-6 web:mt-8">
           <Button
             title="Sign Out"
             variant="danger"

@@ -145,7 +145,7 @@ export default function NewReservationScreen() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView
-        contentContainerClassName="p-6 web:max-w-lg web:mx-auto web:w-full web:py-8"
+        contentContainerClassName="p-6 web:max-w-2xl web:mx-auto web:w-full web:py-8 md:px-8 lg:px-12 lg:py-10"
         keyboardShouldPersistTaps="handled"
       >
         {/* Resource Picker */}
@@ -165,7 +165,7 @@ export default function NewReservationScreen() {
             <Text className="text-sm font-medium text-gray-700 mb-1 web:text-base">
               Resource *
             </Text>
-            <View className="border border-gray-300 rounded-xl overflow-hidden bg-white">
+            <View className="border border-gray-300 rounded-xl overflow-hidden bg-white web:cursor-pointer">
               <Picker
                 selectedValue={resourceId}
                 onValueChange={(value) => setResourceId(value)}
@@ -216,19 +216,23 @@ export default function NewReservationScreen() {
         />
 
         {errors.dateRange ? (
-          <View className="bg-red-50 border border-red-200 rounded-xl px-4 py-2 mb-4">
-            <Text className="text-red-700 text-sm">{errors.dateRange}</Text>
+          <View className="bg-red-50 border border-red-200 rounded-xl px-4 py-2 mb-4 web:px-6 web:py-3">
+            <Text className="text-red-700 text-sm web:text-base">
+              {errors.dateRange}
+            </Text>
           </View>
         ) : null}
 
         {submitError ? (
-          <View className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 mb-4">
-            <Text className="text-red-700 text-sm font-semibold">
+          <View className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 mb-4 web:px-6 web:py-4">
+            <Text className="text-red-700 text-sm font-semibold web:text-base">
               {isOverlapError ? "Time slot conflict" : "Reservation failed"}
             </Text>
-            <Text className="text-red-700 text-sm mt-1">{submitError}</Text>
+            <Text className="text-red-700 text-sm mt-1 web:text-base">
+              {submitError}
+            </Text>
             {isOverlapError ? (
-              <Text className="text-red-600 text-xs mt-2">
+              <Text className="text-red-600 text-xs mt-2 web:text-sm">
                 Pick a different time or review availability below.
               </Text>
             ) : null}
@@ -257,10 +261,10 @@ export default function NewReservationScreen() {
               {availability.map((slot: AvailabilitySlot, idx: number) => (
                 <View
                   key={`${slot.start}-${idx}`}
-                  className={`flex-row items-center justify-between rounded-xl px-4 py-2 ${slot.available ? "bg-green-50 border border-green-200" : "bg-red-50 border border-red-200"}`}
+                  className={`flex-row items-center justify-between rounded-xl px-4 py-2 web:py-3 web:transition-colors web:duration-200 ${slot.available ? "bg-green-50 border border-green-200 web:hover:bg-green-100" : "bg-red-50 border border-red-200 web:hover:bg-red-100"}`}
                 >
                   <Text
-                    className={`text-xs font-medium ${slot.available ? "text-green-700" : "text-red-700"}`}
+                    className={`text-xs font-medium web:text-sm ${slot.available ? "text-green-700" : "text-red-700"}`}
                   >
                     {formatDateRange(slot.start, slot.end)}
                   </Text>

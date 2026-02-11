@@ -93,17 +93,17 @@ export default function ResourceDetailScreen() {
   return (
     <ScrollView
       className="flex-1 bg-gray-50"
-      contentContainerClassName="web:max-w-3xl web:mx-auto web:w-full"
+      contentContainerClassName="web:max-w-5xl web:mx-auto web:w-full"
     >
       {/* Header Card */}
-      <View className="bg-white p-6 border-b border-gray-100">
+      <View className="bg-white p-6 border-b border-gray-100 web:p-8 md:px-8 lg:px-12 lg:py-10">
         <View className="flex-row items-start justify-between mb-2">
           <View className="flex-1">
             <Text className="text-2xl font-bold text-gray-900 web:text-3xl">
               {resource.name}
             </Text>
             {resource.location ? (
-              <Text className="text-sm text-gray-500 mt-1">
+              <Text className="text-sm text-gray-500 mt-1 web:text-base web:mt-2">
                 📍 {resource.location}
               </Text>
             ) : null}
@@ -114,7 +114,7 @@ export default function ResourceDetailScreen() {
           />
         </View>
         {resource.description ? (
-          <Text className="text-base text-gray-600 mt-3 web:text-lg">
+          <Text className="text-base text-gray-600 mt-3 web:text-lg web:leading-relaxed">
             {resource.description}
           </Text>
         ) : null}
@@ -131,10 +131,12 @@ export default function ResourceDetailScreen() {
       </View>
 
       {/* Actions */}
-      <View className="px-4 pt-4 gap-3">
+      <View className="px-4 pt-4 gap-3 web:pt-6 web:gap-4 md:px-6 lg:px-8">
         {deleteError ? (
-          <View className="bg-red-50 border border-red-200 rounded-xl px-4 py-3">
-            <Text className="text-red-700 text-sm">{deleteError}</Text>
+          <View className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 web:px-6 web:py-4">
+            <Text className="text-red-700 text-sm web:text-base">
+              {deleteError}
+            </Text>
           </View>
         ) : null}
         <Button
@@ -179,14 +181,14 @@ export default function ResourceDetailScreen() {
       ) : availability && availability.length > 0 ? (
         <View className="mt-4">
           <SectionHeader title="Availability (Next 7 days)" />
-          <View className="px-4 gap-2">
+          <View className="px-4 gap-2 md:px-6 lg:px-8">
             {availability.map((slot: AvailabilitySlot, index: number) => (
               <View
                 key={`${slot.start}-${index}`}
-                className={`flex-row items-center justify-between rounded-xl px-4 py-3 ${slot.available ? "bg-green-50 border border-green-200" : "bg-red-50 border border-red-200"}`}
+                className={`flex-row items-center justify-between rounded-xl px-4 py-3 web:py-4 web:transition-colors web:duration-200 ${slot.available ? "bg-green-50 border border-green-200 web:hover:bg-green-100" : "bg-red-50 border border-red-200 web:hover:bg-red-100"}`}
               >
                 <Text
-                  className={`text-sm font-medium ${slot.available ? "text-green-700" : "text-red-700"}`}
+                  className={`text-sm font-medium web:text-base ${slot.available ? "text-green-700" : "text-red-700"}`}
                 >
                   {formatDateRange(slot.start, slot.end)}
                 </Text>
@@ -207,17 +209,17 @@ export default function ResourceDetailScreen() {
           onRetry={refetchHistory}
         />
       ) : history && history.length > 0 ? (
-        <View className="mt-4 mb-8">
+        <View className="mt-4 mb-8 web:mb-12 lg:mt-6">
           <SectionHeader title="Reservation History" />
-          <View className="px-4 gap-2">
+          <View className="px-4 gap-2 web:gap-3 md:px-6 lg:px-8">
             {history.map((r) => (
               <Card key={r.id}>
                 <View className="flex-row items-center justify-between">
                   <View className="flex-1">
-                    <Text className="text-sm font-medium text-gray-800">
+                    <Text className="text-sm font-medium text-gray-800 web:text-base">
                       {r.userEmail}
                     </Text>
-                    <Text className="text-xs text-gray-500 mt-0.5">
+                    <Text className="text-xs text-gray-500 mt-0.5 web:text-sm">
                       {formatDateRange(r.startTime, r.endTime)}
                     </Text>
                   </View>

@@ -48,12 +48,12 @@ export function TabBar({ tabs, activeTab, onTabChange }: TabBarProps) {
   }
 
   return (
-    <View className="border-b border-gray-200">
+    <View className="border-b border-gray-200 web:max-w-5xl web:mx-auto web:w-full">
       <View className="relative">
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerClassName="px-4 gap-1 web:gap-2"
+          contentContainerClassName="px-4 gap-1 web:gap-2 md:px-6 lg:px-8"
           onScroll={handleScroll}
           scrollEventThrottle={16}
           onContentSizeChange={handleContentSizeChange}
@@ -64,7 +64,7 @@ export function TabBar({ tabs, activeTab, onTabChange }: TabBarProps) {
             return (
               <Pressable
                 key={tab.key}
-                className={`px-4 py-3 rounded-t-lg ${isActive ? "border-b-2 border-blue-600" : ""}`}
+                className={`px-4 py-3 rounded-t-lg web:cursor-pointer web:transition-colors web:duration-200 web:hover:bg-gray-50 ${isActive ? "border-b-2 border-blue-600" : ""}`}
                 onPress={() => onTabChange(tab.key)}
               >
                 <Text

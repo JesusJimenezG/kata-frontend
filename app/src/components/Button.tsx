@@ -50,7 +50,7 @@ export function Button({
 
   return (
     <Pressable
-      className={`rounded-xl px-6 py-3.5 items-center justify-center web:py-4 web:cursor-pointer ${styles.container} ${fullWidth ? "w-full" : ""} ${isDisabled ? "opacity-50" : ""}`}
+      className={`rounded-xl px-6 py-3.5 items-center justify-center web:py-4 web:cursor-pointer web:transition-all web:duration-200 web:hover:opacity-90 web:hover:shadow-md ${styles.container} ${fullWidth ? "w-full" : ""} ${isDisabled ? "opacity-50 web:cursor-not-allowed" : ""}`}
       disabled={isDisabled}
       {...props}
     >

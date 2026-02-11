@@ -39,7 +39,7 @@ export function Dropdown({
         {label}
       </Text>
       <Pressable
-        className={`border rounded-xl px-4 py-3 bg-white flex-row items-center justify-between web:py-3.5 ${borderColor}`}
+        className={`border rounded-xl px-4 py-3 bg-white flex-row items-center justify-between web:py-3.5 web:cursor-pointer web:transition-colors web:duration-200 web:hover:border-gray-400 ${borderColor}`}
         onPress={() => setIsOpen(true)}
       >
         <Text
@@ -60,10 +60,10 @@ export function Dropdown({
         onRequestClose={() => setIsOpen(false)}
       >
         <Pressable
-          className="flex-1 bg-black/40 justify-center items-center px-6"
+          className="flex-1 bg-black/40 justify-center items-center px-6 web:backdrop-blur-sm"
           onPress={() => setIsOpen(false)}
         >
-          <View className="bg-white rounded-2xl w-full max-w-sm overflow-hidden">
+          <View className="bg-white rounded-2xl w-full max-w-sm overflow-hidden web:shadow-2xl">
             <Text className="text-lg font-semibold text-gray-900 px-5 pt-5 pb-3">
               {label}
             </Text>
@@ -71,7 +71,7 @@ export function Dropdown({
               {options.map((option) => (
                 <Pressable
                   key={option.value}
-                  className={`px-5 py-3.5 border-b border-gray-100 ${
+                  className={`px-5 py-3.5 border-b border-gray-100 web:cursor-pointer web:transition-colors web:duration-150 web:hover:bg-gray-50 ${
                     option.value === value ? "bg-blue-50" : ""
                   }`}
                   onPress={() => {

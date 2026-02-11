@@ -9,7 +9,7 @@ export function Card({ children, ...props }: CardProps) {
 
   return (
     <Pressable
-      className={`bg-white rounded-2xl border border-gray-100 p-4 shadow-sm web:shadow-md web:p-5 ${isClickable ? "active:bg-gray-50 web:cursor-pointer" : ""}`}
+      className={`bg-white rounded-2xl border border-gray-100 p-4 shadow-sm web:shadow-md web:p-5 web:transition-all web:duration-200 ${isClickable ? "active:bg-gray-50 web:cursor-pointer web:hover:shadow-lg web:hover:border-gray-200 web:hover:-translate-y-0.5" : ""}`}
       disabled={!isClickable}
       {...props}
     >

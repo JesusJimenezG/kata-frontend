@@ -21,7 +21,7 @@ export function Input({ label, error, ...props }: InputProps) {
         {label}
       </Text>
       <TextInput
-        className={`border rounded-xl px-4 py-3 text-base text-gray-900 bg-white web:py-3.5 web:text-lg ${borderColor}`}
+        className={`border rounded-xl px-4 py-3 text-base text-gray-900 bg-white web:py-3.5 web:text-lg web:transition-colors web:duration-200 web:outline-none web:hover:border-gray-400 ${borderColor}`}
         placeholderTextColor="#9CA3AF"
         onFocus={(e) => {
           setIsFocused(true);
