@@ -15,3 +15,8 @@ export {
   validateDateRange,
 } from "./validation";
 export { getErrorMessage } from "./errorUtils";
+export {
+  decodeJwt,
+  getTokenExpiresIn,
+  isTokenExpiringSoon,
+} from "./tokenUtils";

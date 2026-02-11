@@ -1,2 +1,8 @@
 export { authService } from "./authService";
-export { useLogin, useRegister, useLogout, authKeys } from "./useAuth";
+export {
+  useLogin,
+  useRegister,
+  useLogout,
+  useSessionRefresh,
+  authKeys,
+} from "./useAuth";

@@ -16,7 +16,7 @@ export type {
 } from "./types";
 
 // ── Client ─────────────────────────────────────────────
-export { apiClient } from "./client";
+export { apiClient, setAuthFailureHandler } from "./client";
 export { tokenStorage } from "./tokenStorage";
 
 // ── Auth ───────────────────────────────────────────────
@@ -25,6 +25,7 @@ export {
   useLogin,
   useRegister,
   useLogout,
+  useSessionRefresh,
   authKeys,
 } from "./auth";
 
