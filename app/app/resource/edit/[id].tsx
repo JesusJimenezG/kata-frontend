@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -10,7 +9,12 @@ import {
 import { router, useLocalSearchParams } from "expo-router";
 import { Picker } from "@react-native-picker/picker";
 
-import { Button, Input, LoadingSpinner } from "../../../src/components";
+import {
+  Button,
+  ErrorMessage,
+  Input,
+  LoadingSpinner,
+} from "../../../src/components";
 import {
   useResource,
   useUpdateResource,
@@ -25,14 +29,26 @@ interface FormErrors {
 
 export default function EditResourceScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { data: resource, isLoading } = useResource(id);
-  const { data: resourceTypes } = useResourceTypes();
+  const {
+    data: resource,
+    isLoading,
+    isError: resourceError,
+    error: resourceErrorData,
+    refetch: refetchResource,
+  } = useResource(id);
+  const {
+    data: resourceTypes,
+    isError: resourceTypesError,
+    error: resourceTypesErrorData,
+    refetch: refetchResourceTypes,
+  } = useResourceTypes();
   const updateMutation = useUpdateResource();
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [resourceTypeId, setResourceTypeId] = useState<number>(0);
   const [location, setLocation] = useState("");
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [errors, setErrors] = useState<FormErrors>({});
 
   useEffect(() => {
@@ -43,6 +59,10 @@ export default function EditResourceScreen() {
       setLocation(resource.location ?? "");
     }
   }, [resource]);
+
+  useEffect(() => {
+    if (submitError) setSubmitError(null);
+  }, [name, description, resourceTypeId, location]);
 
   const validate = (): boolean => {
     const newErrors: FormErrors = {
@@ -56,6 +76,7 @@ export default function EditResourceScreen() {
 
   const handleUpdate = () => {
     if (!validate()) return;
+    setSubmitError(null);
 
     updateMutation.mutate(
       {
@@ -69,12 +90,23 @@ export default function EditResourceScreen() {
       },
       {
         onSuccess: () => router.back(),
-        onError: (err) => Alert.alert("Error", getErrorMessage(err)),
+        onError: (err) => setSubmitError(getErrorMessage(err)),
       },
     );
   };
 
   if (isLoading) return <LoadingSpinner />;
+
+  if (resourceError) {
+    return (
+      <View className="flex-1 bg-gray-50">
+        <ErrorMessage
+          message={getErrorMessage(resourceErrorData)}
+          onRetry={refetchResource}
+        />
+      </View>
+    );
+  }
 
   return (
     <KeyboardAvoidingView
@@ -101,6 +133,13 @@ export default function EditResourceScreen() {
           multiline
           numberOfLines={3}
         />
+
+        {resourceTypesError ? (
+          <ErrorMessage
+            message={getErrorMessage(resourceTypesErrorData)}
+            onRetry={refetchResourceTypes}
+          />
+        ) : null}
 
         <View className="mb-4">
           <Text className="text-sm font-medium text-gray-700 mb-1 web:text-base">
@@ -130,6 +169,12 @@ export default function EditResourceScreen() {
           onChangeText={setLocation}
           placeholder="e.g., Building A, Floor 1"
         />
+
+        {submitError ? (
+          <View className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 mt-4">
+            <Text className="text-red-700 text-sm">{submitError}</Text>
+          </View>
+        ) : null}
 
         <View className="mt-4">
           <Button

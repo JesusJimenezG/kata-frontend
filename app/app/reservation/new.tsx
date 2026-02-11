@@ -1,9 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  Alert,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   ScrollView,
   Text,
   View,
@@ -15,6 +13,7 @@ import {
   Badge,
   Button,
   CalendarPicker,
+  ErrorMessage,
   Input,
   LoadingSpinner,
   SectionHeader,
@@ -28,7 +27,6 @@ import {
 import {
   validateDateRange,
   getErrorMessage,
-  toApiDateTime,
   startOfDay,
   endOfDay,
   formatDateRange,
@@ -47,14 +45,19 @@ export default function NewReservationScreen() {
   const [endDate, setEndDate] = useState("");
   const [endTime, setEndTime] = useState("");
   const [notes, setNotes] = useState("");
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [errors, setErrors] = useState<{
     resourceId?: string;
     dateRange?: string;
   }>({});
 
-  const { data: resources, isLoading: loadingResources } = useResources({
-    active: true,
-  });
+  const {
+    data: resources,
+    isLoading: loadingResources,
+    isError: resourcesError,
+    error: resourcesErrorData,
+    refetch: refetchResources,
+  } = useResources({ active: true });
   const createMutation = useCreateReservation();
 
   // Build ISO strings from date + time inputs
@@ -65,6 +68,9 @@ export default function NewReservationScreen() {
 
   const startIso = buildIso(startDate, startTime);
   const endIso = buildIso(endDate, endTime);
+  const isOverlapError = submitError
+    ? submitError.toLowerCase().includes("overlap")
+    : false;
 
   // Availability preview for selected resource and date
   const showAvailability = !!resourceId && !!startDate;
@@ -75,11 +81,16 @@ export default function NewReservationScreen() {
       ? endOfDay(new Date(startDate))
       : "";
 
-  const { data: availability } = useResourceAvailability(
-    resourceId,
-    availStart,
-    availEnd,
-  );
+  const {
+    data: availability,
+    isError: availabilityError,
+    error: availabilityErrorData,
+    refetch: refetchAvailability,
+  } = useResourceAvailability(resourceId, availStart, availEnd);
+
+  useEffect(() => {
+    if (submitError) setSubmitError(null);
+  }, [resourceId, startDate, startTime, endDate, endTime]);
 
   const validate = (): boolean => {
     const newErrors: {
@@ -100,6 +111,7 @@ export default function NewReservationScreen() {
 
   const handleCreate = () => {
     if (!validate()) return;
+    setSubmitError(null);
 
     createMutation.mutate(
       {
@@ -110,12 +122,22 @@ export default function NewReservationScreen() {
       },
       {
         onSuccess: () => router.replace("/(tabs)/reservations"),
-        onError: (err) => Alert.alert("Error", getErrorMessage(err)),
+        onError: (err) => setSubmitError(getErrorMessage(err)),
       },
     );
   };
 
   if (loadingResources) return <LoadingSpinner />;
+  if (resourcesError) {
+    return (
+      <View className="flex-1 bg-gray-50">
+        <ErrorMessage
+          message={getErrorMessage(resourcesErrorData)}
+          onRetry={refetchResources}
+        />
+      </View>
+    );
+  }
 
   return (
     <KeyboardAvoidingView
@@ -199,6 +221,20 @@ export default function NewReservationScreen() {
           </View>
         ) : null}
 
+        {submitError ? (
+          <View className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 mb-4">
+            <Text className="text-red-700 text-sm font-semibold">
+              {isOverlapError ? "Time slot conflict" : "Reservation failed"}
+            </Text>
+            <Text className="text-red-700 text-sm mt-1">{submitError}</Text>
+            {isOverlapError ? (
+              <Text className="text-red-600 text-xs mt-2">
+                Pick a different time or review availability below.
+              </Text>
+            ) : null}
+          </View>
+        ) : null}
+
         <Input
           label="Notes"
           value={notes}
@@ -209,7 +245,12 @@ export default function NewReservationScreen() {
         />
 
         {/* Availability Preview */}
-        {showAvailability && availability && availability.length > 0 ? (
+        {availabilityError ? (
+          <ErrorMessage
+            message={getErrorMessage(availabilityErrorData)}
+            onRetry={refetchAvailability}
+          />
+        ) : showAvailability && availability && availability.length > 0 ? (
           <View className="mb-4">
             <SectionHeader title="Availability" />
             <View className="gap-2">

@@ -29,6 +29,8 @@ This is the frontend for the Fullstack Resource Management and Reservation Platf
 
 ## AI Usage
 
+- **UI/UX**: Implementación de banners de error inline para retroalimentación de API.
+
 - **Documentación y Reglas**: Se han generado las instrucciones de Copilot y las reglas de desarrollo, workflow de Git y requisitos funcionales utilizando GitHub Copilot. Se han organizado los archivos en `.github/instructions` para una mejor gestión de las reglas del agente y se han validado las rutas y convenciones del proyecto.
 - **Componentes UI**: Creación de una biblioteca de componentes reutilizables (Button, Input, Card, Badge, Modal, etc.) utilizando NativeWind para asegurar consistencia visual y reducir código duplicado. Se utilizó criterio humano para ajustar los estilos de Tailwind a las necesidades de React Native.
 - **Flujo de Navegación**: Configuración de Expo Router con layouts dinámicos para proteger rutas privadas (Auth Guard) y organizar la aplicación en pestañas (Tabs), optimizando la estructura de archivos según las convenciones de Expo 54.

@@ -15,7 +15,7 @@ import {
 import { useAuthContext } from "../../src/contexts";
 import { useResources } from "../../src/services/api/resources";
 import type { ResourceResponse } from "../../src/services/api/types";
-import { formatResourceType } from "../../src/utils";
+import { formatResourceType, getErrorMessage } from "../../src/utils";
 
 const ALL_TAB_KEY = "__all__";
 
@@ -102,10 +102,7 @@ export default function ResourcesScreen() {
       ) : null}
 
       {isError ? (
-        <ErrorMessage
-          message={error?.message ?? "Failed to load resources"}
-          onRetry={refetch}
-        />
+        <ErrorMessage message={getErrorMessage(error)} onRetry={refetch} />
       ) : null}
 
       {isFiltered ? (

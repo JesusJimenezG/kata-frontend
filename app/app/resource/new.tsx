@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -10,7 +9,7 @@ import {
 import { router } from "expo-router";
 import { Picker } from "@react-native-picker/picker";
 
-import { Button, Input } from "../../src/components";
+import { Button, ErrorMessage, Input } from "../../src/components";
 import { useCreateResource } from "../../src/services/api/resources";
 import { useResourceTypes } from "../../src/services/api/resourceTypes";
 import { validateRequired, getErrorMessage } from "../../src/utils";
@@ -25,10 +24,20 @@ export default function NewResourceScreen() {
   const [description, setDescription] = useState("");
   const [resourceTypeId, setResourceTypeId] = useState<number>(0);
   const [location, setLocation] = useState("");
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [errors, setErrors] = useState<FormErrors>({});
 
-  const { data: resourceTypes } = useResourceTypes();
+  const {
+    data: resourceTypes,
+    isError: resourceTypesError,
+    error: resourceTypesErrorData,
+    refetch: refetchResourceTypes,
+  } = useResourceTypes();
   const createMutation = useCreateResource();
+
+  useEffect(() => {
+    if (submitError) setSubmitError(null);
+  }, [name, description, resourceTypeId, location]);
 
   const validate = (): boolean => {
     const newErrors: FormErrors = {
@@ -42,6 +51,7 @@ export default function NewResourceScreen() {
 
   const handleCreate = () => {
     if (!validate()) return;
+    setSubmitError(null);
 
     createMutation.mutate(
       {
@@ -52,7 +62,7 @@ export default function NewResourceScreen() {
       },
       {
         onSuccess: () => router.back(),
-        onError: (err) => Alert.alert("Error", getErrorMessage(err)),
+        onError: (err) => setSubmitError(getErrorMessage(err)),
       },
     );
   };
@@ -83,6 +93,13 @@ export default function NewResourceScreen() {
           numberOfLines={3}
         />
 
+        {resourceTypesError ? (
+          <ErrorMessage
+            message={getErrorMessage(resourceTypesErrorData)}
+            onRetry={refetchResourceTypes}
+          />
+        ) : null}
+
         <View className="mb-4">
           <Text className="text-sm font-medium text-gray-700 mb-1 web:text-base">
             Resource Type *
@@ -111,6 +128,12 @@ export default function NewResourceScreen() {
           onChangeText={setLocation}
           placeholder="e.g., Building A, Floor 1"
         />
+
+        {submitError ? (
+          <View className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 mt-4">
+            <Text className="text-red-700 text-sm">{submitError}</Text>
+          </View>
+        ) : null}
 
         <View className="mt-4">
           <Button

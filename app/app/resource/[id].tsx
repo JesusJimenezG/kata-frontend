@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Alert, Pressable, ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 
 import {
@@ -36,6 +36,7 @@ export default function ResourceDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { isAdmin } = useAuthContext();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   const {
     data: resource,
@@ -49,23 +50,30 @@ export default function ResourceDetailScreen() {
   // Availability for today + next 7 days
   const today = new Date();
   const weekEnd = addDays(today, 7);
-  const { data: availability } = useResourceAvailability(
-    id,
-    startOfDay(today),
-    endOfDay(weekEnd),
-  );
+  const {
+    data: availability,
+    isError: availabilityError,
+    error: availabilityErrorData,
+    refetch: refetchAvailability,
+  } = useResourceAvailability(id, startOfDay(today), endOfDay(weekEnd));
 
-  const { data: history } = useResourceReservationHistory(id);
+  const {
+    data: history,
+    isError: historyError,
+    error: historyErrorData,
+    refetch: refetchHistory,
+  } = useResourceReservationHistory(id);
 
   const handleDelete = () => {
     deleteMutation.mutate(id, {
       onSuccess: () => {
         setShowDeleteDialog(false);
+        setDeleteError(null);
         router.back();
       },
       onError: (err) => {
         setShowDeleteDialog(false);
-        Alert.alert("Error", getErrorMessage(err));
+        setDeleteError(getErrorMessage(err));
       },
     });
   };
@@ -75,10 +83,7 @@ export default function ResourceDetailScreen() {
   if (isError) {
     return (
       <View className="flex-1 bg-gray-50">
-        <ErrorMessage
-          message={error?.message ?? "Failed to load resource"}
-          onRetry={refetch}
-        />
+        <ErrorMessage message={getErrorMessage(error)} onRetry={refetch} />
       </View>
     );
   }
@@ -127,6 +132,11 @@ export default function ResourceDetailScreen() {
 
       {/* Actions */}
       <View className="px-4 pt-4 gap-3">
+        {deleteError ? (
+          <View className="bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+            <Text className="text-red-700 text-sm">{deleteError}</Text>
+          </View>
+        ) : null}
         <Button
           title="Reserve this Resource"
           onPress={() =>
@@ -150,7 +160,10 @@ export default function ResourceDetailScreen() {
               <Button
                 title="Delete"
                 variant="danger"
-                onPress={() => setShowDeleteDialog(true)}
+                onPress={() => {
+                  setDeleteError(null);
+                  setShowDeleteDialog(true);
+                }}
               />
             </View>
           </View>
@@ -158,7 +171,12 @@ export default function ResourceDetailScreen() {
       </View>
 
       {/* Availability */}
-      {availability && availability.length > 0 ? (
+      {availabilityError ? (
+        <ErrorMessage
+          message={getErrorMessage(availabilityErrorData)}
+          onRetry={refetchAvailability}
+        />
+      ) : availability && availability.length > 0 ? (
         <View className="mt-4">
           <SectionHeader title="Availability (Next 7 days)" />
           <View className="px-4 gap-2">
@@ -183,7 +201,12 @@ export default function ResourceDetailScreen() {
       ) : null}
 
       {/* Reservation History */}
-      {history && history.length > 0 ? (
+      {historyError ? (
+        <ErrorMessage
+          message={getErrorMessage(historyErrorData)}
+          onRetry={refetchHistory}
+        />
+      ) : history && history.length > 0 ? (
         <View className="mt-4 mb-8">
           <SectionHeader title="Reservation History" />
           <View className="px-4 gap-2">

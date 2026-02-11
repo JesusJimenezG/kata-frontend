@@ -1,7 +1,7 @@
-import { Alert, Pressable, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { router } from "expo-router";
 
-import { Button, Card, Divider } from "../../src/components";
+import { Button, Card, Divider, ErrorMessage } from "../../src/components";
 import { useAuthContext } from "../../src/contexts";
 import { useLogout } from "../../src/services/api/auth";
 import {
@@ -21,8 +21,18 @@ export default function ProfileScreen() {
   const { userEmail, role, signOut } = useAuthContext();
   const logoutMutation = useLogout();
 
-  const { data: myActive } = useMyActiveReservations();
-  const { data: myHistory } = useMyReservationHistory();
+  const {
+    data: myActive,
+    isError: myActiveError,
+    error: myActiveErrorData,
+    refetch: refetchMyActive,
+  } = useMyActiveReservations();
+  const {
+    data: myHistory,
+    isError: myHistoryError,
+    error: myHistoryErrorData,
+    refetch: refetchMyHistory,
+  } = useMyReservationHistory();
 
   const handleLogout = () => {
     logoutMutation.mutate(undefined, {
@@ -79,6 +89,15 @@ export default function ProfileScreen() {
               </View>
             </View>
           </Card>
+          {myActiveError || myHistoryError ? (
+            <ErrorMessage
+              message={getErrorMessage(myActiveErrorData ?? myHistoryErrorData)}
+              onRetry={() => {
+                refetchMyActive();
+                refetchMyHistory();
+              }}
+            />
+          ) : null}
         </View>
 
         {/* Logout */}

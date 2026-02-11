@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FlatList, Text, View } from "react-native";
 
 import {
@@ -33,6 +33,7 @@ export default function ReservationsScreen() {
   const [cancelTarget, setCancelTarget] = useState<ReservationResponse | null>(
     null,
   );
+  const [cancelError, setCancelError] = useState<string | null>(null);
 
   const { userEmail, isAdmin } = useAuthContext();
 
@@ -47,6 +48,11 @@ export default function ReservationsScreen() {
   const data = activeQuery.data;
   const isLoading = activeQuery.isLoading;
   const isError = activeQuery.isError;
+  const error = activeQuery.error;
+
+  useEffect(() => {
+    if (cancelError) setCancelError(null);
+  }, [activeTab]);
 
   const canCancel = (reservation: ReservationResponse) =>
     reservation.status === "ACTIVE" &&
@@ -55,8 +61,14 @@ export default function ReservationsScreen() {
   const handleCancel = () => {
     if (!cancelTarget) return;
     cancelMutation.mutate(cancelTarget.id, {
-      onSuccess: () => setCancelTarget(null),
-      onError: () => setCancelTarget(null),
+      onSuccess: () => {
+        setCancelTarget(null);
+        setCancelError(null);
+      },
+      onError: (err) => {
+        setCancelTarget(null);
+        setCancelError(getErrorMessage(err));
+      },
     });
   };
 
@@ -93,11 +105,13 @@ export default function ReservationsScreen() {
     <View className="flex-1 bg-gray-50">
       <TabBar tabs={TABS} activeTab={activeTab} onTabChange={setActiveTab} />
 
+      {cancelError ? <ErrorMessage message={cancelError} /> : null}
+
       {isLoading ? (
         <LoadingSpinner />
       ) : isError ? (
         <ErrorMessage
-          message="Failed to load reservations"
+          message={getErrorMessage(error)}
           onRetry={() => activeQuery.refetch()}
         />
       ) : (
